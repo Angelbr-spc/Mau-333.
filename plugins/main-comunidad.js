@@ -6,7 +6,7 @@ const handler = async (m, { conn }) => {
      *COMUNIDAD*  
 ──────── ⚔ ────────  
 
-*Bot barboza*  
+*𝐁𝐨𝐭 •          𝐌𝐚𝐮/ 𝟑𝟑𝟑*  
 • ,👥➤ **Grupo de WhatsApp de la comunidad de 𝐁𝐨𝐭 •          𝐌𝐚𝐮/ 𝟑𝟑𝟑 Ai**  
    Únete para compartir y resolver dudas con otros usuarios. 
   ➤https://whatsapp.com/channel/0029Vaua0ZD3gvWjQaIpSy18
@@ -20,7 +20,7 @@ https://whatsapp.com/channel/0029Vaua0ZD3gvWjQaIpSy18
 
 ──────── ⚔ ────────  
 🔍 *¿Sabías que...?* 
-- El bot •          𝐌𝐚𝐮/ 𝟑𝟑𝟑 Ai es actualizado regularmente para mejorar su desempeño.  
+- El 𝐁𝐨𝐭 •          𝐌𝐚𝐮/ 𝟑𝟑𝟑 Ai es actualizado regularmente para mejorar su desempeño.  
 - Puedes sugerir mejoras o reportar errores directamente en los grupos.  
 - Nuestra comunidad sigue creciendo y cuenta con soporte activo.  
 -

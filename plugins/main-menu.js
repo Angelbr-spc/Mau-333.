@@ -11,7 +11,7 @@ const clockString = ms => {
 const imagen = "https://qu.ax/bUvvx.jpg";
 
 const menuHeader = `
-╭─❒ 「 *📍 BARBOZA MD* 」
+╭─❒ 「 *📍 •          𝐌𝐚𝐮/ 𝟑𝟑𝟑 MD* 」
 │ 👤 *Nombre:* %name
 │ 🎖 *Nivel:* %level | *XP:* %exp/%max
 │ 🔓 *Límite:* %limit | *Modo:* %mode
