@@ -1,4 +1,4 @@
-// ©Créditos A Barboza
+// ©Créditos A •          𝐌𝐚𝐮/ 𝟑𝟑𝟑
 let handler = async (m, { conn, text }) => {
   // No Quites Los Créditos🚀
   m.react('⚙️');

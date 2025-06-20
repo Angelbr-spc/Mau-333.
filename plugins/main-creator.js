@@ -6,9 +6,9 @@ async function handler(m, { conn }) {
     let ownerJid = numcreador + '@s.whatsapp.net';
 
     let name = await conn.getName(ownerJid) || 'Owner'; 
-    let about = (await conn.fetchStatus(ownerJid).catch(() => {}))?.status || 'Creador de bots de WhatsApp y del Bot Barboza Ai';
-    let empresa = 'Barboza- Servicios Tecnológicos';
-    let imagen = 'https://files.catbox.moe/ltq7ph.jpg'; // Reemplaza con la URL de la imagen que deseas mostrar
+    let about = (await conn.fetchStatus(ownerJid).catch(() => {}))?.status || 'Creador de bots de WhatsApp y del 𝐁𝐨𝐭 •          𝐌𝐚𝐮/ 𝟑𝟑𝟑 Ai';
+    let empresa = '•          𝐌𝐚𝐮/ 𝟑𝟑𝟑- Servicios Tecnológicos';
+    let imagen = 'https://qu.ax/bUvvx.jpg'; // Reemplaza con la URL de la imagen que deseas mostrar
 
     // Enviar imagen junto con el número del dueño y sus detalles
     await conn.sendMessage(m.chat, { 
