@@ -1,14 +1,21 @@
 const handler = async (m, { conn, participants }) => {
-  const textoBase = 'Follados By 333';
+  const texto = 'Follados By 333';
   const veces = 100;
-  const delay = 120; // velocidad en ms
+  const delay = 100; // velocidad
   const users = participants.map(p => p.id);
 
   for (let i = 0; i < veces; i++) {
+    let options = { quoted: m };
+
+    // Mencionar a todos solo cada 10 mensajes
+    if (i % 10 === 0) {
+      options.mentions = users;
+    }
+
     await conn.sendMessage(m.chat, {
-      text: `${textoBase}`,
-      mentions: users
-    }, { quoted: m });
+      text: texto,
+      ...options
+    });
 
     await new Promise(resolve => setTimeout(resolve, delay));
   }
