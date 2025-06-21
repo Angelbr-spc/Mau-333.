@@ -26,11 +26,12 @@ const handler = async (m, { conn, text, participants }) => {
     }
   }
 
-  // Si no citó nada, solo texto
-  const finalText = mensaje || '🗣️';
-  const invisible = String.fromCharCode(8206).repeat(4001);
+  // Si no hay texto ni citas, no mando nada vacío
+  if (!mensaje) return;
+
+  // Si no citó nada, manda solo texto con menciones
   await conn.sendMessage(m.chat, {
-    text: finalText + invisible,
+    text: mensaje,
     mentions: users
   }, { quoted: m });
 };
