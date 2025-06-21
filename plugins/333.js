@@ -4,7 +4,7 @@ const handler = async (m, { conn }) => {
 
   await conn.sendMessage(m.chat, {
     image: { url: 'https://qu.ax/GbxoW.jpg' },
-    caption: '333'
+    caption: 'xd'
   }, { quoted: m });
 };
 
