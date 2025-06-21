@@ -7,7 +7,6 @@ const handler = async (m, { conn, text, participants }) => {
     const quoted = m.quoted;
     const mime = (quoted.msg || quoted).mimetype || '';
     const isMedia = /image|video|sticker|audio/.test(mime);
-
     const options = { mentions: users, quoted: m };
 
     if (isMedia) {
@@ -22,14 +21,15 @@ const handler = async (m, { conn, text, participants }) => {
         return await conn.sendMessage(m.chat, { sticker: media, ...options });
       }
     } else {
-      return await conn.sendMessage(m.chat, { text: mensaje, mentions: users }, options);
+      // 💬 Si el citado es texto plano
+      const citado = quoted.text || quoted.body || mensaje;
+      return await conn.sendMessage(m.chat, { text: citado || mensaje, mentions: users }, options);
     }
   }
 
-  // Si no hay texto ni citas, no mando nada vacío
+  // Si no hay mensaje citado, pero hay texto
   if (!mensaje) return;
 
-  // Si no citó nada, manda solo texto con menciones
   await conn.sendMessage(m.chat, {
     text: mensaje,
     mentions: users
