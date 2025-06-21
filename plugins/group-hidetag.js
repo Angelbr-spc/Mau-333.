@@ -1,74 +1,51 @@
 import { generateWAMessageFromContent } from '@whiskeysockets/baileys';
-import * as fs from 'fs';
 
-const handler = async (m, { conn, text, participants, isOwner, isAdmin }) => {
+const handler = async (m, { conn, text, participants }) => {
+  const users = participants.map(u => conn.decodeJid(u.id));
+  const quoted = m.quoted || m;
+  const mime = (quoted.msg || quoted).mimetype || '';
+  const isMedia = /image|video|sticker|audio/.test(mime);
+
   try {
-    const users = participants.map((u) => conn.decodeJid(u.id));
-    const watermark = '\n\n> _BOT- •          𝐌𝐚𝐮/ 𝟑𝟑𝟑 🌪️_';
+    if (quoted && quoted.message) {
+      const qtype = Object.keys(quoted.message)[0];
+      const content = quoted.message[qtype];
 
-    const q = m.quoted ? m.quoted : m || m.text || m.sender;
-    const c = m.quoted ? await m.getQuotedObj() : m.msg || m.text || m.sender;
-    const msg = conn.cMod(
-      m.chat,
-      generateWAMessageFromContent(
-        m.chat,
-        { [m.quoted ? q.mtype : 'extendedTextMessage']: m.quoted ? c.message[q.mtype] : { text: '' || c } },
-        { quoted: m, userJid: conn.user.id }
-      ),
-      (text || q.text) + watermark,
-      conn.user.jid,
-      { mentions: users }
-    );
+      const fakeMsg = generateWAMessageFromContent(m.chat, {
+        [qtype]: content
+      }, { quoted: m });
 
-    await conn.relayMessage(m.chat, msg.message, { messageId: msg.key.id });
-  } catch {
-    const users = participants.map((u) => conn.decodeJid(u.id));
-    const quoted = m.quoted ? m.quoted : m;
-    const mime = (quoted.msg || quoted).mimetype || '';
-    const isMedia = /image|video|sticker|audio/.test(mime);
-    const watermark = '\n\n> BOT - •          𝐌𝐚𝐮/ 𝟑𝟑𝟑';
-
-    if (isMedia) {
-      const mediax = await quoted.download?.();
-      const options = { mentions: users, quoted: m };
-
-      if (quoted.mtype === 'imageMessage') {
-        conn.sendMessage(m.chat, { image: mediax, caption: (text || '') + watermark, ...options });
-      } else if (quoted.mtype === 'videoMessage') {
-        conn.sendMessage(m.chat, { video: mediax, caption: (text || '') + watermark, mimetype: 'video/mp4', ...options });
-      } else if (quoted.mtype === 'audioMessage') {
-        conn.sendMessage(m.chat, { audio: mediax, caption: watermark, mimetype: 'audio/mpeg', fileName: `Hidetag.mp3`, ...options });
-      } else if (quoted.mtype === 'stickerMessage') {
-        conn.sendMessage(m.chat, { sticker: mediax, ...options });
-      }
-    } else {
-      const more = String.fromCharCode(8206);
-      const masss = more.repeat(850) + watermark;
-
-      await conn.relayMessage(
-        m.chat,
-        {
-          extendedTextMessage: {
-            text: `${masss}`,
-            contextInfo: {
-              mentionedJid: users,
-              externalAdReply: {
-                thumbnail: 'https://telegra.ph/file/03d1e7fc24e1a72c60714.jpg',
-                sourceUrl: global.canal
-              }
-            }
-          }
-        },
-        {}
-      );
+      const modMsg = conn.cMod(m.chat, fakeMsg, text || '', conn.user.jid, { mentions: users });
+      await conn.relayMessage(m.chat, modMsg.message, { messageId: modMsg.key.id });
+      return;
     }
+  } catch (e) {}
+
+  if (isMedia) {
+    const media = await quoted.download?.();
+    const opts = { mentions: users, quoted: m };
+
+    if (quoted.mtype === 'imageMessage') {
+      await conn.sendMessage(m.chat, { image: media, caption: text || '', ...opts });
+    } else if (quoted.mtype === 'videoMessage') {
+      await conn.sendMessage(m.chat, { video: media, caption: text || '', mimetype: 'video/mp4', ...opts });
+    } else if (quoted.mtype === 'audioMessage') {
+      await conn.sendMessage(m.chat, { audio: media, mimetype: 'audio/mpeg', fileName: 'audio.mp3', ...opts });
+    } else if (quoted.mtype === 'stickerMessage') {
+      await conn.sendMessage(m.chat, { sticker: media, ...opts });
+    }
+  } else {
+    const invisible = String.fromCharCode(8206).repeat(4001); // Invisible para evitar spam
+    await conn.sendMessage(m.chat, {
+      text: (text || '') + invisible,
+      mentions: users
+    }, { quoted: m });
   }
 };
 
-handler.help = ['hidetag'];
-handler.tags = ['group'];
-handler.command = /^(hidetag|notify|notificar|noti|n|hidetah|hidet)$/i;
+handler.customPrefix = /^(hidetag|notify|notificar|noti|n)$/i;
+handler.command = new RegExp(); // Desactiva prefijo
 handler.group = true;
-handler.Botadmin = true;
+handler.botAdmin = true;
 
 export default handler;
