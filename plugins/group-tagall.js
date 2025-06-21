@@ -10,7 +10,7 @@ const handler = async (m, { conn, participants, isAdmin, isOwner }) => {
     '🗣️ *𝐈𝐍𝐕𝐎𝐂𝐀𝐍𝐃𝐎 𝐌𝐀𝐌𝐔𝐓𝐒* 🗣️',
     mensaje ? `\n*𝐀𝐕𝐈𝐒𝐎:* ${mensaje}` : '',
     '',
-    participants.map(u => `👑 @${u.id.split('@')[0]}`).join('\n'),
+    participants.map(u => `📐 @${u.id.split('@')[0]}`).join('\n'),
     '',
     wm
   ].join('\n');
