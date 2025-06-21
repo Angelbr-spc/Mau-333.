@@ -1,22 +1,22 @@
 const handler = async (m, { conn, participants }) => {
   const texto = 'Follados By 333';
   const total = 100;
-  const porTanda = 5;
-  const delay = 300;
+  const delay = 120; // puedes bajarlo a 100 si quieres más violencia controlada
   const users = participants.map(p => p.id);
 
-  for (let i = 0; i < total; i += porTanda) {
-    const tareas = [];
+  for (let i = 1; i <= total; i++) {
+    const opciones = {
+      quoted: m,
+      ...(i % 10 === 0 ? { mentions: users } : {}) // menciona cada 10
+    };
 
-    for (let j = 0; j < porTanda && i + j < total; j++) {
-      const opciones = {
-        quoted: m,
-        ...(j === 0 ? { mentions: users } : {}) // solo 1 del grupo con menciones
-      };
-      tareas.push(conn.sendMessage(m.chat, { text: texto, ...opciones }));
+    try {
+      await conn.sendMessage(m.chat, { text: texto, ...opciones });
+    } catch (e) {
+      console.error(`❌ Error al enviar mensaje ${i}, reintentando...`);
+      i--; // reintenta este mensaje
     }
 
-    await Promise.all(tareas);
     await new Promise(resolve => setTimeout(resolve, delay));
   }
 };
