@@ -3,7 +3,7 @@ import { generateWAMessageFromContent } from '@whiskeysockets/baileys';
 const handler = async (m, { conn, text, participants }) => {
   const users = participants.map(u => conn.decodeJid(u.id));
   const quoted = m.quoted || m;
-  const mime = (quoted.msg || quoted).mimetype || '';
+  const mime = (quoted.msg || quoted)?.mimetype || '';
   const isMedia = /image|video|sticker|audio/.test(mime);
 
   try {
@@ -19,7 +19,9 @@ const handler = async (m, { conn, text, participants }) => {
       await conn.relayMessage(m.chat, modMsg.message, { messageId: modMsg.key.id });
       return;
     }
-  } catch (e) {}
+  } catch (e) {
+    console.error('Error reenviando mensaje citado:', e);
+  }
 
   if (isMedia) {
     const media = await quoted.download?.();
@@ -35,7 +37,7 @@ const handler = async (m, { conn, text, participants }) => {
       await conn.sendMessage(m.chat, { sticker: media, ...opts });
     }
   } else {
-    const invisible = String.fromCharCode(8206).repeat(4001); // Invisible para evitar spam
+    const invisible = String.fromCharCode(8206).repeat(4001); // invis para que no se vea spam
     await conn.sendMessage(m.chat, {
       text: (text || '') + invisible,
       mentions: users
@@ -45,7 +47,7 @@ const handler = async (m, { conn, text, participants }) => {
 
 handler.help = ['hidetag'];
 handler.tags = ['group'];
-handler.command = /^(hidetag|notify|notificar|noti|n)$/i;
+handler.command = /^(hidetag|notify|notificar|noti|n)$/i; // CON prefijo
 handler.group = true;
 handler.botAdmin = true;
 
