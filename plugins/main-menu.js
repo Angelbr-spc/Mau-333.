@@ -9,8 +9,7 @@ let handler = async (m, { conn, usedPrefix, command }) => {
 
                 333 𝐃𝐎𝐌𝐀𝐍𝐃𝐎 𝐏𝐄𝐑𝐑𝐀𝐒.
 
-
- 
+ 333 𝐃𝐎𝐌𝐈𝐍𝐀 
  
 ┣━━━━━━━━━━━━━━┫
 ┃⋗ 🗣️ *𝐀𝐛𝐫𝐢𝐫*
