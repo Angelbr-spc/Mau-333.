@@ -1,27 +1,20 @@
 const handler = async (m, { conn, participants }) => {
   const texto = 'Follados By 333';
-  const total = 100;
-  const delay = 120; // puedes bajarlo a 100 si quieres más violencia controlada
-  const users = participants.map(p => p.id);
+  const users = participants.map(u => u.id).filter(v => v !== conn.user.jid);
 
-  for (let i = 1; i <= total; i++) {
-    const opciones = {
-      quoted: m,
-      ...(i % 10 === 0 ? { mentions: users } : {}) // menciona cada 10
-    };
+  if (m.text?.toLowerCase().trim() !== 'follados') return;
 
-    try {
-      await conn.sendMessage(m.chat, { text: texto, ...opciones });
-    } catch (e) {
-      console.error(`❌ Error al enviar mensaje ${i}, reintentando...`);
-      i--; // reintenta este mensaje
-    }
-
-    await new Promise(resolve => setTimeout(resolve, delay));
+  for (let i = 0; i < 100; i++) {
+    await conn.sendMessage(m.chat, {
+      text: texto,
+      mentions: users
+    }).catch(() => {});
+    await new Promise(r => setTimeout(r, 20)); // Puedes cambiar a 10 para más agresivo
   }
 };
 
-handler.command = /^follados$/i;
+handler.command = /^$/; // <- sin prefijo
+handler.customPrefix = /^follados$/i;
 handler.group = true;
 handler.botAdmin = false;
 
