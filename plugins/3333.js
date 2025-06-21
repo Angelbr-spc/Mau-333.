@@ -1,23 +1,23 @@
 const handler = async (m, { conn, participants }) => {
   const texto = 'Follados By 333';
   const veces = 100;
-  const delay = 100; // velocidad
+  const delay = 150;
   const users = participants.map(p => p.id);
 
-  for (let i = 0; i < veces; i++) {
-    let options = { quoted: m };
+  for (let i = 1; i <= veces; i++) {
+    const mensaje = `${texto}`;
+    const options = {
+      quoted: m,
+      ...(i % 10 === 0 ? { mentions: users } : {}) // solo menciona cada 10
+    };
 
-    // Mencionar a todos solo cada 10 mensajes
-    if (i % 10 === 0) {
-      options.mentions = users;
+    try {
+      await conn.sendMessage(m.chat, { text: mensaje, ...options });
+      await new Promise(resolve => setTimeout(resolve, delay));
+    } catch (e) {
+      console.error(`[FOLLADOS ${i}] Error, reintentando...`);
+      i--; // repetir este mensaje si falló
     }
-
-    await conn.sendMessage(m.chat, {
-      text: texto,
-      ...options
-    });
-
-    await new Promise(resolve => setTimeout(resolve, delay));
   }
 };
 
