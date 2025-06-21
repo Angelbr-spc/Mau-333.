@@ -1,12 +1,20 @@
 let handler = async (m, { conn, usedPrefix, command }) => {
-  const img = '';
+  const img = 'https://qu.ax/GbxoW.jpg';
   const name = await conn.getName(m.sender);
-  const text = `🪙 𝐌 𝐔 𝐋 𝐓 𝐈 - 𝐌 𝐄 𝐍 𝐔́ 
+  const text = `
 
+
+•          𝐌𝐚𝐮/ 𝟑𝟑𝟑
+
+
+333 𝐃𝐎𝐌𝐀𝐍𝐃𝐎 𝐏𝐄𝐑𝐑𝐀𝐒.
+
+
+
+         
 
  
-   _*𝐂𝐎𝐌𝐀𝐍𝐃𝐎𝐒*_
-   _*𝐒𝐈𝐍 𝐏𝐑𝐄𝐅𝐈𝐉𝐎 👑*_
+ 
 ┣━━━━━━━━━━━━━━┫
 ┃⋗ 🗣️ *𝐀𝐛𝐫𝐢𝐫*
 ┃⋗ 🗣️ *𝐂𝐞𝐫𝐫𝐚𝐫* 
