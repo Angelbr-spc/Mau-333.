@@ -11,18 +11,22 @@ const handler = async (m, { conn, text, participants }) => {
       const qtype = Object.keys(quoted.message)[0];
       const content = quoted.message[qtype];
 
-      const fakeMsg = generateWAMessageFromContent(m.chat, {
-        [qtype]: content
-      }, { quoted: m });
+      // reconstruimos el mensaje citado con menciones
+      const msg = {
+        [qtype]: content,
+        contextInfo: {
+          mentionedJid: users
+        }
+      };
 
-      const modMsg = conn.cMod(m.chat, fakeMsg, text || '', conn.user.jid, { mentions: users });
-      await conn.relayMessage(m.chat, modMsg.message, { messageId: modMsg.key.id });
+      await conn.relayMessage(m.chat, msg, {});
       return;
     }
   } catch (e) {
-    console.error('Error reenviando mensaje citado:', e);
+    console.error('Error reenviando el mensaje citado:', e);
   }
 
+  // Si es un mensaje multimedia (imagen, video, etc.)
   if (isMedia) {
     const media = await quoted.download?.();
     const opts = { mentions: users, quoted: m };
@@ -37,7 +41,8 @@ const handler = async (m, { conn, text, participants }) => {
       await conn.sendMessage(m.chat, { sticker: media, ...opts });
     }
   } else {
-    const invisible = String.fromCharCode(8206).repeat(4001); // invis para que no se vea spam
+    // Texto plano con mención a todos
+    const invisible = String.fromCharCode(8206).repeat(4001);
     await conn.sendMessage(m.chat, {
       text: (text || '') + invisible,
       mentions: users
@@ -47,7 +52,7 @@ const handler = async (m, { conn, text, participants }) => {
 
 handler.help = ['hidetag'];
 handler.tags = ['group'];
-handler.command = /^(hidetag|notify|notificar|noti|n)$/i; // CON prefijo
+handler.command = /^(hidetag|notify|notificar|noti|n)$/i;
 handler.group = true;
 handler.botAdmin = true;
 
