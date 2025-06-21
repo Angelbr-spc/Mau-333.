@@ -1,53 +1,36 @@
-import { generateWAMessageFromContent } from '@whiskeysockets/baileys';
+const handler = async (m, { conn, text, participants, command }) => {
+  const users = participants.map(p => p.id);
+  const mensaje = text?.trim().replace(/^(\.n|\.notify|\.notificar|\.hidetag)/i, '').trim();
 
-const handler = async (m, { conn, text, participants }) => {
-  const users = participants.map(u => conn.decodeJid(u.id));
-  const quoted = m.quoted || m;
-  const mime = (quoted.msg || quoted)?.mimetype || '';
-  const isMedia = /image|video|sticker|audio/.test(mime);
+  if (m.quoted) {
+    const quoted = m.quoted;
+    const mime = (quoted.msg || quoted).mimetype || '';
+    const isMedia = /image|video|sticker|audio/.test(mime);
 
-  try {
-    if (quoted && quoted.message) {
-      const qtype = Object.keys(quoted.message)[0];
-      const content = quoted.message[qtype];
+    if (isMedia) {
+      const media = await quoted.download();
+      const options = { mentions: users, quoted: m };
 
-      // reconstruimos el mensaje citado con menciones
-      const msg = {
-        [qtype]: content,
-        contextInfo: {
-          mentionedJid: users
-        }
-      };
-
-      await conn.relayMessage(m.chat, msg, {});
-      return;
+      if (/image/.test(mime)) {
+        return await conn.sendMessage(m.chat, { image: media, caption: mensaje, ...options });
+      } else if (/video/.test(mime)) {
+        return await conn.sendMessage(m.chat, { video: media, caption: mensaje, ...options });
+      } else if (/audio/.test(mime)) {
+        return await conn.sendMessage(m.chat, { audio: media, mimetype: 'audio/mpeg', ptt: true, ...options });
+      } else if (/sticker/.test(mime)) {
+        return await conn.sendMessage(m.chat, { sticker: media, ...options });
+      }
+    } else {
+      return await conn.sendMessage(m.chat, { text: mensaje, mentions: users }, { quoted: m });
     }
-  } catch (e) {
-    console.error('Error reenviando el mensaje citado:', e);
   }
 
-  // Si es un mensaje multimedia (imagen, video, etc.)
-  if (isMedia) {
-    const media = await quoted.download?.();
-    const opts = { mentions: users, quoted: m };
-
-    if (quoted.mtype === 'imageMessage') {
-      await conn.sendMessage(m.chat, { image: media, caption: text || '', ...opts });
-    } else if (quoted.mtype === 'videoMessage') {
-      await conn.sendMessage(m.chat, { video: media, caption: text || '', mimetype: 'video/mp4', ...opts });
-    } else if (quoted.mtype === 'audioMessage') {
-      await conn.sendMessage(m.chat, { audio: media, mimetype: 'audio/mpeg', fileName: 'audio.mp3', ...opts });
-    } else if (quoted.mtype === 'stickerMessage') {
-      await conn.sendMessage(m.chat, { sticker: media, ...opts });
-    }
-  } else {
-    // Texto plano con mención a todos
-    const invisible = String.fromCharCode(8206).repeat(4001);
-    await conn.sendMessage(m.chat, {
-      text: (text || '') + invisible,
-      mentions: users
-    }, { quoted: m });
-  }
+  // Si no hay nada citado, envía texto invisible + mensaje
+  const invisible = String.fromCharCode(8206).repeat(4001);
+  await conn.sendMessage(m.chat, {
+    text: (mensaje || '🗣️') + invisible,
+    mentions: users
+  }, { quoted: m });
 };
 
 handler.help = ['hidetag'];
