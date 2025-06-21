@@ -43,8 +43,9 @@ const handler = async (m, { conn, text, participants }) => {
   }
 };
 
-handler.customPrefix = /^(hidetag|notify|notificar|noti|n)$/i;
-handler.command = new RegExp(); // Desactiva prefijo
+handler.help = ['hidetag'];
+handler.tags = ['group'];
+handler.command = /^(hidetag|notify|notificar|noti|n)$/i;
 handler.group = true;
 handler.botAdmin = true;
 
