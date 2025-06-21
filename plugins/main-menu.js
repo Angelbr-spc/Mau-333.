@@ -7,11 +7,8 @@ let handler = async (m, { conn, usedPrefix, command }) => {
 •          𝐌𝐚𝐮/ 𝟑𝟑𝟑
 
 
-333 𝐃𝐎𝐌𝐀𝐍𝐃𝐎 𝐏𝐄𝐑𝐑𝐀𝐒.
+                333 𝐃𝐎𝐌𝐀𝐍𝐃𝐎 𝐏𝐄𝐑𝐑𝐀𝐒.
 
-
-
-         
 
  
  
