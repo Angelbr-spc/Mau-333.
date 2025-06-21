@@ -6,7 +6,7 @@ let handler = async (m, { isPrems, conn, }) => {
   }
 
   let img = 'https://i.ibb.co/J55dPST/garena-free-fire-logo-rosj9f102kpok60v.jpg';
-  let texto = `> > 𝙈𝙀𝙉𝙐 𝘿𝙀 𝙁𝙍𝙀𝙀 𝙁𝙄𝙍𝙀 👑.
+  let texto = `𝙈𝙀𝙉𝙐 𝘿𝙀 𝙁𝙍𝙀𝙀 𝙁𝙄𝙍𝙀 👑.
 
 👑 𝙁𝙍𝙀𝙀 𝙁𝙄𝙍𝙀 👑
 🖤 ➺ 🎫.donarsala
