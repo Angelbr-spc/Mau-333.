@@ -90,7 +90,7 @@ const getDownloadUrl = async (videoUrl) => {
 const sendAudioNormal = async (conn, chat, audioUrl, videoTitle) => {
   let thumbnailBuffer = null;
   try {
-    const response = await axios.get('https://qu.ax/bUvvx.jpg', { responseType: 'arraybuffer' });
+    const response = await axios.get('https://qu.ax/GbxoW.jpg', { responseType: 'arraybuffer' });
     thumbnailBuffer = Buffer.from(response.data, 'binary');
   } catch {}
 
@@ -132,7 +132,7 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
   if (!text || !text.trim()) {
     let thumbnailBuffer = null;
     try {
-      const response = await axios.get('https://qu.ax/bUvvx.jpg', { responseType: 'arraybuffer' });
+      const response = await axios.get('https://qu.ax/GbxoW.jpg', { responseType: 'arraybuffer' });
       thumbnailBuffer = Buffer.from(response.data, 'binary');
     } catch {}
 

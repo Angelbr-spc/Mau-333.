@@ -8,7 +8,7 @@ const clockString = ms => {
   return [h, m, s].map(v => v.toString().padStart(2, '0')).join(':');
 };
 
-const imagen = "https://qu.ax/bUvvx.jpg";
+const imagen = "https://qu.ax/GbxoW.jpg";
 
 const menuHeader = `
 ╭─❒ 「 *📍 •          𝐌𝐚𝐮/ 𝟑𝟑𝟑 MD* 」
