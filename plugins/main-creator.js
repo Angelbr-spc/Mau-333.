@@ -9,7 +9,7 @@ let handler = async (m, { conn }) => {
   m.react('🎭');
 
 const imageUrl = 'https://qu.ax/GbxoW.jpg'
-  const numCreador = '573206095607';
+  const numCreador = '5217774385829';
   const ownerJid = numCreador + '@s.whatsapp.net';
   const name = await conn.getName(ownerJid) || 'Alee';
   const about = (await conn.fetchStatus(ownerJid).catch(() => {}))?.status || `𝐒𝐨𝐲 𝐌𝐚𝐮, 𝐃𝐮𝐞𝐧̃𝐨 𝐝𝐞𝐥 𝐁𝐨𝐭 𝐌𝐚𝐮 🎭.`;
