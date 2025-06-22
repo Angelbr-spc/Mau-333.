@@ -8,7 +8,7 @@ import PhoneNumber from 'awesome-phonenumber';
 let handler = async (m, { conn }) => {
   m.react('🎭');
 
-const imageUrl = 'https://qu.ax/FxpUy.jpg'
+const imageUrl = 'https://qu.ax/GbxoW.jpg'
   const numCreador = '573206095607';
   const ownerJid = numCreador + '@s.whatsapp.net';
   const name = await conn.getName(ownerJid) || 'Alee';
@@ -55,7 +55,7 @@ END:VCARD`.trim();
         externalAdReply: {
           title: textbot,
           body: dev,
-          thumbnailUrl: 'https://qu.ax/FxpUy.jpg',
+          thumbnailUrl: 'https://qu.ax/GbxoW.jpg',
           sourceUrl: 'oo',
           mediaType: 1,
           showAdAttribution: true,
