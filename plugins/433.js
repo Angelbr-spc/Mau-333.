@@ -7,9 +7,9 @@ const handler = async (m, { conn, args, usedPrefix, command }) => {
   try {
     const result = await conn.onWhatsApp(number + '@s.whatsapp.net');
     if (result && result.length > 0 && result[0].exists) {
-      m.reply(`✅ *El número +${number} está en soporte de WhatsApp.*`);
-    } else {
       m.reply(`❌ *El número +${number} NO está en soporte de WhatsApp.*`);
+    } else {
+      m.reply(`✅ *El número +${number}  está en soporte de WhatsApp.*`);
     }
   } catch (e) {
     console.error(e);
