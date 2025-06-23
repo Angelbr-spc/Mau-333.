@@ -2,32 +2,38 @@ const handler = async (m, { conn }) => {
   if (!m.isGroup) return;
 
   const groupMetadata = await conn.groupMetadata(m.chat);
-  const participants = groupMetadata.participants;
-  const botId = conn.user.jid;
-  const senderId = m.sender;
-  const groupOwner = groupMetadata.owner;
+  const participants = groupMetadata.participants || [];
+  const botNumber = conn.decodeJid(conn.user.id);
+  const sender = m.sender;
+  const owner = groupMetadata.owner;
 
-  const botAdmin = participants.find(p => p.id === botId)?.admin;
-  const userAdmin = participants.find(p => p.id === senderId)?.admin;
+  const isBotAdmin = participants.find(p => p.id === botNumber)?.admin;
+  const isSenderAdmin = participants.find(p => p.id === sender)?.admin;
 
-  if (!botAdmin) return m.reply('🚫 Necesito ser admin para ejecutar esto.');
-  if (!userAdmin) return m.reply('⚠️ Solo un admin puede usar este comando.');
+  if (!isBotAdmin) return m.reply('🚫 Necesito ser admin para ejecutar esto.');
+  if (!isSenderAdmin) return m.reply('⚠️ Solo un administrador puede usar este comando.');
 
-  // Filtrar todos los admins (excepto owner y bot)
-  const adminsToDemote = participants
-    .filter(p => p.admin && p.id !== botId && p.id !== groupOwner)
-    .map(p => p.id);
+  const adminsToDemote = participants.filter(p =>
+    p.admin &&
+    p.id !== botNumber &&
+    p.id !== owner
+  );
 
-  if (adminsToDemote.length === 0) return m.reply('✅ No hay admins que degradar (excepto el owner y el bot).');
+  if (!adminsToDemote.length) return m.reply('✅ No hay admins que degradar (excepto el bot y el owner).');
 
   try {
-    await Promise.all(
-      adminsToDemote.map(jid => conn.groupParticipantsUpdate(m.chat, [jid], 'demote'))
-    );
-    await m.reply(`🧹 Se degradó a ${adminsToDemote.length} admin${adminsToDemote.length > 1 ? 'istradores' : 'istrador'}.`);
+    for (const p of adminsToDemote) {
+      await conn.groupParticipantsUpdate(m.chat, [p.id], 'demote');
+      await new Promise(res => setTimeout(res, 100)); // pequeña pausa para no saturar
+    }
+
+    await conn.sendMessage(m.chat, {
+      text: `🧹 Se degradó a ${adminsToDemote.length} admin${adminsToDemote.length > 1 ? 'istradores' : 'istrador'}.`,
+      mentions: adminsToDemote.map(u => u.id)
+    }, { quoted: m });
   } catch (e) {
-    console.log('❌ Error al degradar:', e);
-    m.reply('⚠️ Hubo un error al degradar a algunos admins.');
+    console.log(e);
+    return m.reply('⚠️ Ocurrió un error al degradar admins.');
   }
 };
 
