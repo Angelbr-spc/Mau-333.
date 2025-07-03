@@ -1,7 +1,7 @@
 const wm = '•       𝐌𝐚𝐮/ 𝟑𝟑𝟑';
 
 const handler = async (m, { conn, participants, isAdmin, isOwner }) => {
-  if (!isAdmin && !isOwner) return conn.reply(m.chat, '*⚠️ Este comando es solo para admins.*', m);
+  if (!isAdmin && !isOwner) return conn.reply(m.chat, '*⚠️ Este 👤comando es solo para admins.*', m);
 
   const texto = (m.text || '').trim();
   const mensaje = texto.replace(/^(\.|)?(tagall|invocar|invocacion|invocación|todos|talibanes)\s*/i, '');
